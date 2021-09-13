@@ -84,15 +84,15 @@ app.get("/get_recording/:id", async (req, res) => {
   try {
     const rec = await axios.get(`${apiurl}/room_recordings/${req.params.id}`, { auth })
     res.json(rec.data)
-    /*
-    const filestream = await axios.get(uri, { responseType: 'stream' })
-    res.setHeader("content-disposition", "attachment; filename=recording.mp4");
-    filestream.data.pipe(res);
-    */
   } catch (e) {
     console.log(e);
     return res.sendStatus(500);
   }
+})
+
+app.get("/rooms", async (req, res) => {
+  const rooms = await axios.get(`${apiurl}/rooms`, { auth })
+  res.json(rooms.data.data)
 })
 
 async function start(port) {

@@ -180,7 +180,6 @@ export default function Video({
     const layer = currLayout.layers.find(lyr => lyr.x < x && x < lyr.x + lyr.width && 
                                                 lyr.y < y && y < lyr.y + lyr.height)
     if (layer && layer.reservation !== 'fullscreen') {
-      console.log(layer)
       setOverlayStyle({
         display: 'block',
         position: 'absolute',

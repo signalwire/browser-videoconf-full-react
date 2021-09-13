@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import CreatableSelect from 'react-select/creatable';
+import axios from "axios";
 
 export default function JoinCallForm({ onJoin = () => {} }) {
   let [name, setName] = useState("");
   let [room, setRoom] = useState("");
+  const [rooms, setRooms] = useState([])
+
+  useEffect(() => {
+    axios.get("/rooms").then(v => {
+      setRooms(v.data.map(room => ({value: room.name, label: room.name})))
+    })
+  }, [])
+
+  function isValidNewOption(inputValue, selectValue, selectOptions, accessors) {
+    if (inputValue.trim() === "") return false
+    if (selectOptions.map(v => v.value).includes(inputValue)) return false
+    if (!inputValue.match(/^[A-Za-z0-9_-]+$/g)) return false
+    return true
+  }
+
   return (
     <Container>
       <Row className="justify-content-md-center">
@@ -27,11 +44,14 @@ export default function JoinCallForm({ onJoin = () => {} }) {
 
             <Form.Group className="mb-3" controlId="VideoRoom">
               <Form.Label>Room Name</Form.Label>
-              <Form.Control
-                type="text"
+              <CreatableSelect
                 placeholder="Room Name"
-                onChange={(e) => setRoom(e.target.value)}
-                value={room}
+                isClearable
+                allowCreateWhileLoading
+                options={rooms}
+                isValidNewOption={isValidNewOption}
+                onChange={(value, actionMeta) => setRoom(value ? value.value : '')}
+                value={room ? {value: room, label: room} : undefined}
                 pattern="[^' ']+"
                 required
               />
