@@ -22,6 +22,7 @@ import {
 import { useHistory } from "react-router";
 import SplitButtonMenu from "../components/SplitButton.js";
 import ScreenShareButton from "../components/ShareScreenButton";
+import RecordingButton from "../components/RecordingButton";
 import useScreenSize from "use-screen-size";
 
 export default function InCall({ roomDetails }) {
@@ -234,6 +235,19 @@ export default function InCall({ roomDetails }) {
             </Col>
             <Col xs="auto" style={{ marginTop: 5 }}>
               <ScreenShareButton room={room} />
+            </Col>
+            <Col xs="auto" style={{ marginTop: 5 }}>
+              <RecordingButton
+                room={room}
+                eventLogger={logEvent}
+                recordingReady={(rec) => {
+                  const link = document.createElement('a');
+                  link.href = rec.uri;
+                  link.setAttribute('download', true);
+                  document.body.appendChild(link);
+                  link.click();
+                }}
+              />
             </Col>
             <Col xs="auto" style={{ marginTop: 5 }}>
               <Button

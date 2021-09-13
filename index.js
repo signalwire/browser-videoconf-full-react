@@ -6,6 +6,7 @@ const auth = {
 const apiurl = process.env.SPACE;
 const moderatorPermissions = [
   "room.list_available_layouts",
+  "room.recording",
   "room.set_layout",
   "room.member.audio_mute",
   "room.member.audio_unmute",
@@ -77,6 +78,22 @@ app.post("/get_token", async (req, res) => {
     return res.sendStatus(500);
   }
 });
+
+// Endpoint to obtain the file of a given recording
+app.get("/get_recording/:id", async (req, res) => {
+  try {
+    const rec = await axios.get(`${apiurl}/room_recordings/${req.params.id}`, { auth })
+    res.json(rec.data)
+    /*
+    const filestream = await axios.get(uri, { responseType: 'stream' })
+    res.setHeader("content-disposition", "attachment; filename=recording.mp4");
+    filestream.data.pipe(res);
+    */
+  } catch (e) {
+    console.log(e);
+    return res.sendStatus(500);
+  }
+})
 
 async function start(port) {
   app.listen(port, () => {

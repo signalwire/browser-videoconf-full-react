@@ -1543,10 +1543,10 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@signalwire/core@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@signalwire/core/-/core-3.1.1.tgz#4b26a2b9445384d46480239ea56a9a78395c14a9"
-  integrity sha512-TZ+U53UT8vMIcCnDptLQTLqW5iITUKwOvS0gZnw4I6UJi1hD04iD88d5soKIAsMaMEQynfQ+kwKjwX04H62AAA==
+"@signalwire/core@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@signalwire/core/-/core-3.1.2.tgz#c5f8eb8dad812ee0f4fdfde41a20c9b59a8eeea5"
+  integrity sha512-IOwd5i5090tmv5ZSar+OO7wXP3YIXDJtYCBhm/CqlgMRTR04LhFjkr8miQvkHI/J2Rcu2pxzjJeE8Nn0XtzkDw==
   dependencies:
     "@reduxjs/toolkit" "^1.6.0"
     "@types/uuid" "^8.3.0"
@@ -1557,20 +1557,20 @@
     strict-event-emitter-types "^2.0.0"
     uuid "^8.3.2"
 
-"@signalwire/js@^3.0.0-beta.6":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@signalwire/js/-/js-3.1.1.tgz#4b88c9dd8b7325b15f1b7471abcb865d0d6e3c2c"
-  integrity sha512-Aj9nC/QM9uSDhjCV/2btEsGsdx8ecY80nd+R1Hx4aiMG+vk+W1LZ/229lTMhI58F6GcTOLUuecIIcYsJ9PEGpA==
+"@signalwire/js@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@signalwire/js/-/js-3.2.0.tgz#41c67d9adf24ea7c41ef3cf8df8282f36f24f70b"
+  integrity sha512-jjgyHEkDChVBlw+LtMkrI6ixOmtMSQzi3L8R1c/n9GlNeJYXWr2UpyxJXU1CrbSq9ZWthTotXd2yf69C29oYIg==
   dependencies:
-    "@signalwire/core" "3.1.1"
-    "@signalwire/webrtc" "3.1.1"
+    "@signalwire/core" "3.1.2"
+    "@signalwire/webrtc" "3.1.2"
 
-"@signalwire/webrtc@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@signalwire/webrtc/-/webrtc-3.1.1.tgz#77d6044e08e60bad28d9271a5163fd09ae7297d1"
-  integrity sha512-+mjRgTfLCbREHhSPzUyHjDW6xYXFPw2s6I6zTx4+Gb2zNCoqDpPmPvQ5lnsKrCnM40CzjWzaEyUqC0SUSU8PjQ==
+"@signalwire/webrtc@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@signalwire/webrtc/-/webrtc-3.1.2.tgz#b85591976c55abe6c26e2389c937c90f203e2a14"
+  integrity sha512-TZuo4+BP0AO0J8AIn7Pd8pS3FI2NmsCj7uznqTHVCYbu7Ns8ZWzZtxLHzx22T0vh1VVdmUpOBya7SmgbvJ4Oag==
   dependencies:
-    "@signalwire/core" "3.1.1"
+    "@signalwire/core" "3.1.2"
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.2"
