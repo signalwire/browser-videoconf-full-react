@@ -1,5 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import Button from "react-bootstrap/Button";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Video from "../components/Video";
 import Select from "../components/Select";
@@ -25,7 +28,7 @@ import ScreenShareButton from "../components/ShareScreenButton";
 import RecordingButton from "../components/RecordingButton";
 import useScreenSize from "use-screen-size";
 
-export default function InCall({ roomDetails }) {
+export default function InCall({ roomDetails, onRoomChange }) {
   let size = useScreenSize();
   console.log(size.width);
   let history = useHistory();
@@ -45,6 +48,8 @@ export default function InCall({ roomDetails }) {
   let [speakerMuted, setSpeakerMuted] = useState(false);
 
   let [memberList, setMemberList] = useState([]);
+
+  const [rooms, setRooms] = useState([])
 
   let [, setUpdateSignal] = useState(true);
   const updateView = () => setUpdateSignal((x) => !x);
@@ -87,6 +92,18 @@ export default function InCall({ roomDetails }) {
     [history]
   );
 
+  function refreshRoomList() {
+    axios.get("/rooms").then(v => {
+      setRooms(v.data.map(room => room.name))
+    })
+  }
+  useEffect(refreshRoomList, [])
+
+  function roomSelected(roomName) {
+    room.leave()
+    onRoomChange(roomName)
+  }
+
   return (
     <>
       <Container fluid>
@@ -99,6 +116,7 @@ export default function InCall({ roomDetails }) {
           >
             {roomDetails.mod ? "Moderator" : "normal uwer"}
             <Video
+              key={JSON.stringify(roomDetails)}
               onRoomInit={onRoomInit}
               onRoomUpdate={onRoomUpdate}
               joinDetails={roomDetails}
@@ -113,6 +131,7 @@ export default function InCall({ roomDetails }) {
           <Col className="col">
             <Participants
               memberList={memberList}
+              roomName={roomDetails.room}
               mod={roomDetails.mod}
               onMemberUpdate={async (event) => {
                 if (event.action === "remove") {
@@ -248,6 +267,22 @@ export default function InCall({ roomDetails }) {
                   link.click();
                 }}
               />
+            </Col>
+            <Col xs="auto" style={{ marginTop: 5 }}>
+              <DropdownButton
+                title="Rooms"
+                variant="success"
+                drop="up"
+                onClick={() => refreshRoomList()}
+              >
+                {rooms.filter(r => r !== roomDetails.room)
+                      .map(roomName => (
+                  <Dropdown.Item
+                    key={roomName}
+                    onClick={() => roomSelected(roomName)}
+                  >{roomName}</Dropdown.Item>
+                ))}
+              </DropdownButton>
             </Col>
             <Col xs="auto" style={{ marginTop: 5 }}>
               <Button
