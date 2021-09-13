@@ -19,6 +19,12 @@ export default function Video({
   let memberList = useRef([]);
   let screen = useScreenSize();
 
+  // Keep track of the information about the current layout
+  let [currLayout, setCurrLayout] = useState()
+
+  // Style and position of the overlay
+  let [overlayStyle, setOverlayStyle] = useState({ display: 'none' })
+
   useEffect(() => {
     if (setupDone) return;
     setup_room();
@@ -83,6 +89,7 @@ export default function Video({
             onMemberListUpdate([...memberList.current]);
           });
           room.on("layout.changed", async (e) => {
+            setCurrLayout(e.layout)
             onRoomUpdate({ layout: e.layout.name });
           });
 
@@ -160,6 +167,38 @@ export default function Video({
     onRoomUpdate,
     setupDone,
   ]);
+
+  function updateOverlay(e) {
+    if (!currLayout)
+      return
+
+    // Mouse coordinates relative to the video element, in percentage (0 to 100)
+    const rect = document.getElementById('temp').getBoundingClientRect();
+    const x = 100 * (e.clientX - rect.left) / rect.width;
+    const y = 100 * (e.clientY - rect.top) / rect.height;
+
+    const layer = currLayout.layers.find(lyr => lyr.x < x && x < lyr.x + lyr.width && 
+                                                lyr.y < y && y < lyr.y + lyr.height)
+    if (layer && layer.reservation !== 'fullscreen') {
+      console.log(layer)
+      setOverlayStyle({
+        display: 'block',
+        position: 'absolute',
+        overflow: 'hidden',
+        top: layer.y + '%',
+        left: layer.x + '%',
+        width: layer.width + '%',
+        height: layer.height + '%',
+        zIndex: 1,
+        background: '#0d6efd38',
+        backdropFilter: 'blur(10px)',
+        pointerEvents: 'none'
+      })
+    } else {
+      setOverlayStyle({display: 'none'})
+    }
+  }
+
   return (
     <div
       style={{
@@ -191,8 +230,14 @@ export default function Video({
         style={{
           width,
           minHeight: 0.5 * screen.height,
+          position: 'relative'
         }}
-      ></div>
+        onMouseOver={updateOverlay}
+        onMouseMove={updateOverlay}
+        onMouseLeave={updateOverlay}
+      >
+        <div style={overlayStyle}></div>
+      </div>
     </div>
   );
 }
