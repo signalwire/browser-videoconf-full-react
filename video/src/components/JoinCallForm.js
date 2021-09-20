@@ -13,10 +13,22 @@ export default function JoinCallForm({ onJoin = () => {} }) {
   const [rooms, setRooms] = useState([])
 
   useEffect(() => {
-    axios.get("/rooms").then(v => {
-      setRooms(v.data.map(room => ({value: room.name, label: room.name})))
-    })
-  }, [])
+    // Get list of rooms from the server
+    obtainRoomsList()
+  }, []);
+
+  async function obtainRoomsList() {
+    try {
+      const rooms = await axios.get("/rooms");
+      if (Array.isArray(rooms.data)) {
+        setRooms(
+          rooms.data.map((room) => ({ value: room.name, label: room.name }))
+        );
+      } else throw new Error();
+    } catch (e) {
+      console.error("Unable to get the list of rooms from the server.");
+    }
+  }
 
   function isValidNewOption(inputValue, selectValue, selectOptions, accessors) {
     if (inputValue.trim() === "") return false
@@ -76,4 +88,13 @@ export default function JoinCallForm({ onJoin = () => {} }) {
       </Row>
     </Container>
   );
+}
+
+async function getAllRooms() {
+  const rooms = await axios.get("/rooms");
+  if (Array.isArray(rooms.data)) {
+    return rooms.data
+  }
+
+  throw Error("Unable to get the list of rooms from the server.")
 }
