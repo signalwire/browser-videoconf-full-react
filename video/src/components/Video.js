@@ -208,11 +208,7 @@ export default function Video({
     if (!currLayout.current)
       return
 
-    console.log("AXA")
-    console.log(memberId)
-    console.log(currLayout.current.layers)
     const layer = currLayout.current.layers.find(lyr => lyr.member_id === memberId)
-    console.log(layer)
     if (layer && speaking) {
       setSpeakerOverlayStyle({
         display: 'block',
