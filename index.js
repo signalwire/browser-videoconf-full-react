@@ -79,8 +79,14 @@ app.post("/get_token", async (req, res) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, "video", "build")));
-
+app.get('/', function(req,res) {
+  console.log(path.join(__dirname,'video', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname,'video', 'build', 'index.html'));
+});
+app.get('*', function(req,res) {
+  console.log(path.join(__dirname,'video','build',req.path));
+  res.sendFile(path.join(__dirname, 'video','build',req.path));
+});
 
 
 async function start(port) {
