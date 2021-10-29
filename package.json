@@ -9,6 +9,7 @@
   "scripts": {
     "client": "cd video && yarn start",
     "start": "node index.js",
+    "heroku-prebuild": "yarn --cwd \"video\" install",
     "build": "yarn --cwd \"video\" build",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
