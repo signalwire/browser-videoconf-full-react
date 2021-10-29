@@ -1,8 +1,16 @@
 {
   "name": "example-create-react-app-express",
   "version": "1.0.0",
+  "license": "UNLICENSED",
+  "engines": {
+      "node": "14.18.1",
+      "yarn": "^1.22.17"
+  },
   "scripts": {
     "client": "cd video && yarn start",
+    "start": "node index.js",
+    "heroku-prebuild": "yarn --cwd \"video\" install",
+    "build": "yarn --cwd \"video\" build",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
@@ -11,9 +19,14 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "video": "file:./video"
   },
   "devDependencies": {
-    "concurrently": "^4.0.1"
+    "concurrently": "^4.0.1",
+    "nodemon": "^2.0.14",
+    "react-scripts": "^4.0.3",
+    "react": "^17.0.2",
+    "yarn": "^1.22.17"
   }
 }
