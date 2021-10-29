@@ -1,7 +1,7 @@
 {
   "name": "example-create-react-app-express",
   "version": "1.0.0",
-
+  "license": "UNLICENSED",
   "engines": {
       "node": "14.18.1",
       "yarn": "^1.22.17"
