@@ -1,18 +1,12 @@
 {
   "name": "example-create-react-app-express",
   "version": "1.0.0",
-  "engines":
-  {
-    "name": "fandog",
-    "description": "fandog",
-    "version": "0.1.0",
-    "engines": {
-      "node": "",
+
+  "engines": {
+      "node": "14.18.1",
       "yarn": "^1.22.17"
-    }
   },
   "scripts": {
-    "install:all": "yarn --cwd \"video\" install",
     "client": "cd video && yarn start",
     "start": "node index.js",
     "heroku-postbuild": "yarn --cwd \"video\" build",
@@ -24,12 +18,13 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "video": "file:./video"
   },
   "devDependencies": {
-    "yarn": "^1.22.17",
     "concurrently": "^4.0.1",
     "nodemon": "^2.0.14",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^4.0.3",
+    "yarn": "^1.22.17"
   }
 }
