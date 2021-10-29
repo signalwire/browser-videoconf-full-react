@@ -4,6 +4,7 @@ const auth = {
   password: process.env.API_KEY, // API token
 };
 const apiurl = process.env.SPACE;
+const path = require('path');
 const moderatorPermissions = [
   "room.list_available_layouts",
   "room.set_layout",
@@ -78,11 +79,16 @@ app.post("/get_token", async (req, res) => {
   }
 });
 
+app.use(express.static(path.join(__dirname, "video", "build")));
+
+
+
 async function start(port) {
   app.listen(port, () => {
     console.log("Server listening at port", port);
   });
 }
 
+
 // Start the server
-start(5000);
+start(process.env.PORT);

@@ -1,8 +1,21 @@
 {
   "name": "example-create-react-app-express",
   "version": "1.0.0",
+  "engines":
+  {
+    "name": "fandog",
+    "description": "fandog",
+    "version": "0.1.0",
+    "engines": {
+      "node": "",
+      "yarn": "^1.22.17"
+    }
+  },
   "scripts": {
+    "install:all": "yarn --cwd \"video\" install",
     "client": "cd video && yarn start",
+    "start": "node index.js",
+    "heroku-postbuild": "yarn --cwd \"video\" build",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
