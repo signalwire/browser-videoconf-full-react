@@ -26,6 +26,7 @@
     "concurrently": "^4.0.1",
     "nodemon": "^2.0.14",
     "react-scripts": "^4.0.3",
+    "react": "^17.0.2",
     "yarn": "^1.22.17"
   }
 }
