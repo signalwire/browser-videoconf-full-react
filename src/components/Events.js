@@ -14,8 +14,8 @@ export default function Events({ log = {} }) {
         index: counter.current,
         title: log.title,
         text: log.text,
-        variant: log.variant,
-      },
+        variant: log.variant
+      }
     ]);
     counter.current += 1;
   }, [log]);
