@@ -34,33 +34,6 @@ export default function Header() {
                 <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/getting-started-with-the-signalwire-video-api-1">
                   Getting Started with the SignalWire Video API
                 </NavDropdown.Item>
-                <NavDropdown.Divider />
-
-                <NavDropdown.Header>
-                  Making a Zoom clone with the SignalWire Video APIs
-                </NavDropdown.Header>
-
-                <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/making-a-zoom-clone-with-signalwire-video-apis">
-                  1. Overview
-                </NavDropdown.Item>
-                <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/writing-a-backend-to-proxy-signalwire-video-rest-api">
-                  2. Writing a backend to proxy SignalWire Video REST API
-                </NavDropdown.Item>
-                <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/writing-a-basic-react-frontend">
-                  3. A basic React frontend
-                </NavDropdown.Item>
-                <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/working-with-microphones-cameras-and-speakers">
-                  4. Working with microphones, cameras and speakers
-                </NavDropdown.Item>
-                <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/changing-layouts">
-                  5. Changing layouts
-                </NavDropdown.Item>
-                <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/sharing-screen">
-                  6. Screen sharing
-                </NavDropdown.Item>
-                <NavDropdown.Item href="https://developer.signalwire.com/apis/docs/moderator-controls">
-                  7. Listing members and Moderator controls
-                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
