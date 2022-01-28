@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import socketIOClient from "socket.io-client";
+import { useHistory } from "react-router-dom";
 import RoomPreview from "./RoomPreview"
 import SERVERLOCATION from "../serverLocation";
 
 export default function RoomPreviewList() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [ roomList, setRoomList ] = React.useState([])
+  const history = useHistory();
+  const [roomList, setRoomList] = React.useState([])
 
   useEffect(() => {
     /**
@@ -23,27 +23,29 @@ export default function RoomPreviewList() {
     const socket = socketIOClient(SERVERLOCATION);
     socket.on("rooms_updated", (rooms) => {
       setRoomList(rooms);
-      setIsLoading(false);
     });
   }, []);
 
-  // React.useEffect(() => {
-  //   const timer = setInterval(refresh, 30 * 1000)
-  //   refresh()
-
-  //   return () => {
-  //     clearInterval(timer)
-  //   }
-  // }, [])
-
-  async function refresh() {
-    const reply = await axios.get(SERVERLOCATION + "/joinable_rooms");
-    setRoomList(reply.data)
+  function onRoomClicked(room) {
+    history.push('/invite?m=1&r=' + encodeURIComponent(room.name))
   }
 
   return (
-    <div>
-      {roomList.map(room => <RoomPreview key={room.id} room={room} />)}
+    <div style={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      gap: 20
+    }}>
+      {
+        roomList.map(room => <RoomPreview
+          key={room.id}
+          room={room}
+          onClick={() => onRoomClicked(room)}
+        />
+        )
+      }
     </div>
   );
 }
