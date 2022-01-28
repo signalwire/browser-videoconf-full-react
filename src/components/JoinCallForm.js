@@ -4,8 +4,10 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useHistory } from "react-router-dom";
 
 export default function JoinCallForm({ onJoin = () => {} }) {
+  const history = useHistory();
   let [name, setName] = useState("");
   let [room, setRoom] = useState("");
   return (
@@ -50,6 +52,15 @@ export default function JoinCallForm({ onJoin = () => {} }) {
               }}
             >
               Join
+            </Button>
+            <Button
+              variant="secondary"
+              style={{ float: 'right' }}
+              onClick={() => {
+                history.push('/explore')
+              }}
+            >
+              Explore rooms...
             </Button>
           </Form>
         </Col>

@@ -13,6 +13,7 @@ import {
 import JoinCallForm from "./components/JoinCallForm.js";
 import InviteForm from "./components/InviteForm";
 import InCall from "./pages/InCall.js";
+import Explore from "./pages/Explore.js";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -27,6 +28,10 @@ function App() {
     <>
       <Header />
       <Switch>
+        <Route path="/explore">
+          <Explore />
+        </Route>
+
         <Route path="/in-call">
           {roomDetails.name === undefined || roomDetails.room === undefined ? (
             <Redirect to="/" />

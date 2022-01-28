@@ -1,3 +1,3 @@
-const SERVERLOCATION = "https://8gv4h.sse.codesandbox.io";
-// const SERVERLOCATION = "https://guides.swrooms.com/get_token";
+const SERVERLOCATION = "https://2q54i.sse.codesandbox.io/";
+// const SERVERLOCATION = "https://guides.swrooms.com/";
 export default SERVERLOCATION;
