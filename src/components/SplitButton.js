@@ -13,7 +13,7 @@ export default function SplitButtonMenu({
   return (
     <Dropdown drop="up" as={ButtonGroup}>
       <Button
-        variant={muted ? "danger" : "success"}
+        variant={muted ? "success" : "danger"}
         onClick={async () => {
           if (muted) {
             setMuted(false);
@@ -27,7 +27,7 @@ export default function SplitButtonMenu({
 
       <Dropdown.Toggle
         split
-        variant={muted ? "danger" : "success"}
+        variant={muted ? "success" : "danger"}
         id="dropdown-split-basic"
       />
 

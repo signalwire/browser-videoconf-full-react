@@ -22,11 +22,10 @@ export default function Video({
 
     (async () => {
       try {
-        const reply = await axios.post(SERVERLOCATION + "/get_token", {
+        const reply = await axios.post(SERVERLOCATION + "/public/video_token", {
           user_name: joinDetails.name,
           room_name: joinDetails.room,
-          mod: joinDetails.mod,
-          space: "guides"
+          mod: !!joinDetails.mod
         });
         console.log(reply.data);
         const token = reply.data.token;
