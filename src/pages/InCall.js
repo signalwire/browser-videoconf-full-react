@@ -161,8 +161,8 @@ export default function InCall({ roomDetails }) {
                     await roomSession.updateCamera({ deviceId: id });
                     updateView();
                   }}
-                  muteIcon={() => <MdVideocamOff />}
-                  unmuteIcon={() => <VideocamIcon />}
+                  muteIcon={() => <VideocamIcon />}
+                  unmuteIcon={() => <MdVideocamOff />}
                 />
               </Col>
 
@@ -184,8 +184,8 @@ export default function InCall({ roomDetails }) {
                     await roomSession.updateMicrophone({ deviceId: id });
                     updateView();
                   }}
-                  muteIcon={() => <MdMicOff />}
-                  unmuteIcon={() => <MdMic />}
+                  muteIcon={() => <MdMic />}
+                  unmuteIcon={() => <MdMicOff />}
                 />
               </Col>
 
@@ -207,8 +207,8 @@ export default function InCall({ roomDetails }) {
                     await roomSession.updateSpeaker({ deviceId: id });
                     updateView();
                   }}
-                  muteIcon={() => <MdVolumeOff />}
-                  unmuteIcon={() => <MdVolumeUp />}
+                  muteIcon={() => <MdVolumeUp />}
+                  unmuteIcon={() => <MdVolumeOff />}
                 />
               </Col>
 
