@@ -73,9 +73,6 @@ export default function Video({
 
             onMemberListUpdate([...memberList.current]);
           });
-          roomSession.on("layout.changed", async (e) => {
-            onRoomUpdate({ layout: e.layout.name });
-          });
 
           roomSession.on("member.left", async (e) => {
             let memberThatLeft = memberList.current.find(
