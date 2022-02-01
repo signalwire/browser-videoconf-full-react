@@ -60,7 +60,7 @@ export default function Participants({
                   >
                     <Button
                       style={{ padding: "2px 5px", marginLeft: 1 }}
-                      variant={!member.audio_muted ? "success" : "danger"}
+                      variant={!member.audio_muted ? "danger" : "success"}
                       onClick={() => {
                         member.audio_muted
                           ? onMemberUpdate({
@@ -73,7 +73,7 @@ export default function Participants({
                             });
                       }}
                     >
-                      {member.audio_muted ? <MdMic /> : <MdMicOff />}
+                      {member.audio_muted ? <MdMicOff /> : <MdMic />}
                     </Button>
                   </OverlayTrigger>
 
@@ -88,7 +88,7 @@ export default function Participants({
                   >
                     <Button
                       style={{ padding: "2px 5px", marginLeft: 1 }}
-                      variant={!member.video_muted ? "success" : "danger"}
+                      variant={!member.video_muted ? "danger" : "success"}
                       onClick={() => {
                         member.video_muted
                           ? onMemberUpdate({
@@ -101,7 +101,7 @@ export default function Participants({
                             });
                       }}
                     >
-                      {member.video_muted ? <MdVideocam /> : <MdVideocamOff />}
+                      {member.video_muted ? <MdVideocamOff /> : <MdVideocam />}
                     </Button>
                   </OverlayTrigger>
 
