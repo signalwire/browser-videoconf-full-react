@@ -5,7 +5,7 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "@signalwire/js": "^3.7.0",
+    "@signalwire/js": "3.8.0-dev.202202021245.c33a456.0",
     "axios": "0.25.0",
     "bootstrap": "^5.1.0",
     "react": "17.0.2",
