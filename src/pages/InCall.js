@@ -33,7 +33,6 @@ export default function InCall({ roomDetails }) {
 
   const [roomSession, setRoomSession] = useState({});
   const [event, setEvent] = useState(null);
-  const [thisMemberId, setThisMemberId] = useState(null);
 
   const [audioMuted, setAudioMuted] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
@@ -68,8 +67,6 @@ export default function InCall({ roomDetails }) {
       if (updatedValues.microphones !== undefined)
         setMicrophones(updatedValues.microphones);
       if (updatedValues.left === true) history.push("/");
-      if (updatedValues.thisMemberId !== undefined)
-        setThisMemberId(updatedValues.thisMemberId);
       if (updatedValues.member !== undefined) {
         const mem = updatedValues.member;
         console.log("Current User", mem);
@@ -119,19 +116,19 @@ export default function InCall({ roomDetails }) {
                   console.log("Removing Member", event.id);
                   await roomSession.removeMember({ memberId: event.id });
                   console.log("Removed member", event.id);
-                  if (event.id === thisMemberId) history.push("/");
+                  if (event.id === roomSession?.memberId) history.push("/");
                 } else if (event.action === "mute_video") {
                   await roomSession.videoMute({ memberId: event.id });
-                  if (event.id === thisMemberId) setVideoMuted(true);
+                  if (event.id === roomSession?.memberId) setVideoMuted(true);
                 } else if (event.action === "mute_audio") {
                   await roomSession.audioMute({ memberId: event.id });
-                  if (event.id === thisMemberId) setAudioMuted(true);
+                  if (event.id === roomSession?.memberId) setAudioMuted(true);
                 } else if (event.action === "unmute_audio") {
                   await roomSession.audioUnmute({ memberId: event.id });
-                  if (event.id === thisMemberId) setAudioMuted(false);
+                  if (event.id === roomSession?.memberId) setAudioMuted(false);
                 } else if (event.action === "unmute_video") {
                   await roomSession.videoUnmute({ memberId: event.id });
-                  if (event.id === thisMemberId) setVideoMuted(false);
+                  if (event.id === roomSession?.memberId) setVideoMuted(false);
                 }
               }}
             />
