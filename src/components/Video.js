@@ -13,7 +13,6 @@ export default function Video({
   onMemberListUpdate = () => {}
 }) {
   let [isLoading, setIsLoading] = useState(true);
-  let thisMemberId = useRef(null);
   let memberList = useRef([]);
 
   useEffect(() => {
@@ -39,13 +38,12 @@ export default function Video({
           });
 
           roomSession.on("room.joined", async (e) => {
-            thisMemberId.current = e.member_id;
             memberList.current = e.room_session.members;
             const thisMember = memberList.current.find(
               (m) => m.id === e.member_id
             );
 
-            onRoomUpdate({ thisMemberId: e.member_id, member: thisMember });
+            onRoomUpdate({ member: thisMember });
             onMemberListUpdate(e.room.members);
             eventLogger("You have joined the room.");
           });
@@ -61,7 +59,7 @@ export default function Video({
 
           roomSession.on("member.left", async (e) => {
             console.log("member.left")
-            if (thisMemberId.current === e.member.id) {
+            if (e.member.id === roomSession.memberId) {
               console.log("It is you who has left the room");
               onRoomUpdate({ left: true });
             } else {
