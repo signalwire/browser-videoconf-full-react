@@ -14,7 +14,7 @@ export default function JoinCallForm({ onJoin = () => {} }) {
     <Container>
       <Row className="justify-content-md-center">
         <Col lg={4} className="mt-5 mb-2">
-          <h3>Join a Room</h3>
+          <h3>Join a new Room</h3>
           <Form onSubmit={(e) => e.preventDefault()}>
             <Form.Group className="mb-3" controlId="VideoCallName">
               <Form.Label>Your Name</Form.Label>
@@ -57,7 +57,7 @@ export default function JoinCallForm({ onJoin = () => {} }) {
               variant="secondary"
               style={{ float: 'right' }}
               onClick={() => {
-                history.push('/explore')
+                history.push('/')
               }}
             >
               Explore rooms...

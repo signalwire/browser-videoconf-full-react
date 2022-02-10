@@ -28,10 +28,6 @@ function App() {
     <>
       <Header />
       <Switch>
-        <Route path="/explore">
-          <Explore />
-        </Route>
-
         <Route path="/in-call">
           {roomDetails.name === undefined || roomDetails.room === undefined ? (
             <Redirect to="/" />
@@ -52,7 +48,7 @@ function App() {
             }}
           />
         </Route>
-        <Route path="/">
+        <Route path="/join">
           <JoinCallForm
             onJoin={({ room, name }) => {
               console.log(name, room);
@@ -61,6 +57,9 @@ function App() {
               history.push("/in-call");
             }}
           />
+        </Route>
+        <Route path="/">
+          <Explore />
         </Route>
       </Switch>
     </>

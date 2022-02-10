@@ -1,9 +1,23 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
+import Button from 'react-bootstrap/Button';
+import { useHistory } from "react-router-dom";
+
 import RoomPreviewList from "../components/RoomPreviewList";
 
 export default function Explore({}) {
-    return <div style={{ textAlign: 'center', marginBottom: '1em' }}>
-        <h2>Explore Rooms</h2>
-        <RoomPreviewList />
+    const history = useHistory();
+
+    return <div class="mt-5 mb-2" style={{ textAlign: 'center' }}>
+        <h2>Join a Room</h2>
+        <div style={{ marginTop: 50, marginBottom: 50 }}>
+            <RoomPreviewList />
+        </div>
+        <Button
+            variant="primary"
+            onClick={() => {
+                history.push('/join')
+            }}>
+            Join a new Room
+        </Button>
     </div>
 }
