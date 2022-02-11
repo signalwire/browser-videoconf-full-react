@@ -7,7 +7,7 @@ import RoomPreviewList from "../components/RoomPreviewList";
 export default function Explore({}) {
     const history = useHistory();
 
-    return <div class="mt-5 mb-2" style={{ textAlign: 'center' }}>
+    return <div className="mt-5 mb-2" style={{ textAlign: 'center' }}>
         <h2>Join a Room</h2>
         <div style={{ marginTop: 50, marginBottom: 50 }}>
             <RoomPreviewList />
