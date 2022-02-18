@@ -21,8 +21,9 @@ export default function RoomPreviewList() {
      *     }
      */
     const socket = socketIOClient(SERVERLOCATION);
+    socket.emit("public_messages");
     socket.on("rooms_updated", (rooms) => {
-      setRoomList(rooms);
+      setRoomList(rooms.roomSessions);
     });
   }, []);
 
