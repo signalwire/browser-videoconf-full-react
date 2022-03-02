@@ -9,6 +9,8 @@ import Events from "../components/Events";
 import InviteButton from "../components/Invite.js";
 import Participants from "../components/Partcipants";
 import NavBar from "react-bootstrap/Navbar";
+import Chat from "../components/Chat.js";
+
 import {
   MdMic,
   MdMicOff,
@@ -33,7 +35,7 @@ export default function InCall({ roomDetails }) {
 
   const [roomSession, setRoomSession] = useState({});
   const [event, setEvent] = useState(null);
-
+  
   const [audioMuted, setAudioMuted] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
   const [speakerMuted, setSpeakerMuted] = useState(false);
@@ -80,6 +82,11 @@ export default function InCall({ roomDetails }) {
 
   return (
     <>
+      <Chat
+        user_id={roomSession?.memberId}
+        room_id={roomSession?.roomId}
+        memberName={memberList?.find((x) => x.id === roomSession?.memberId)?.name}
+      />
       <Container fluid>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
           <div
