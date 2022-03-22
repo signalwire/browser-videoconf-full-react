@@ -65,18 +65,25 @@ export default function Video({
             }
           });
 
+          // Add Layout Listener
+          roomSession.on("layout.changed", async (e) => {
+            onRoomUpdate({ layout: e.layout.name });
+          });
+
           console.log("Join");
 
           await roomSession.join();
 
           console.log("Joined");
 
+          // Get room layouts
+          let layouts = (await roomSession.getLayouts()).layouts;
           let cameras = await SignalWire.WebRTC.getCameraDevicesWithPermissions();
           let microphones = await SignalWire.WebRTC.getMicrophoneDevicesWithPermissions();
           let speakers = await SignalWire.WebRTC.getSpeakerDevicesWithPermissions();
 
           setIsLoading(false);
-          onRoomInit(roomSession, cameras, microphones, speakers);
+          onRoomInit(roomSession, layouts, cameras, microphones, speakers);
 
           camChangeWatcher = await SignalWire.WebRTC.createDeviceWatcher({
             targets: ["camera"]

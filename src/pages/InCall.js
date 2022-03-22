@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Video from "../components/Video";
+import Select from "../components/Select";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -9,6 +10,8 @@ import Events from "../components/Events";
 import InviteButton from "../components/Invite.js";
 import Participants from "../components/Partcipants";
 import NavBar from "react-bootstrap/Navbar";
+import Chat from "../components/Chat.js";
+
 import {
   MdMic,
   MdMicOff,
@@ -21,11 +24,15 @@ import {
 import { useHistory } from "react-router";
 import SplitButtonMenu from "../components/SplitButton.js";
 import ScreenShareButton from "../components/ShareScreenButton";
+import isObjEmpty from "../Utils/isObjEmpty";
 
 export default function InCall({ roomDetails }) {
   const history = useHistory();
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const [layouts, setLayouts] = useState([]);
+  const [curLayout, setCurLayout] = useState();
 
   const [cameras, setCameras] = useState([]);
   const [microphones, setMicrophones] = useState([]);
@@ -48,7 +55,8 @@ export default function InCall({ roomDetails }) {
   }, []);
 
   const onRoomInit = useCallback(
-    (roomSession, cameras, microphones, speakers) => {
+    (roomSession, layouts, cameras, microphones, speakers) => {
+      setLayouts(layouts);
       setCameras(cameras);
       setMicrophones(microphones);
       setSpeakers(speakers);
@@ -66,6 +74,8 @@ export default function InCall({ roomDetails }) {
         setSpeakers(updatedValues.speakers);
       if (updatedValues.microphones !== undefined)
         setMicrophones(updatedValues.microphones);
+      if (updatedValues.layout !== undefined)
+        setCurLayout(updatedValues.layout);
       if (updatedValues.left === true) history.push("/");
       if (updatedValues.member !== undefined) {
         const mem = updatedValues.member;
@@ -80,6 +90,11 @@ export default function InCall({ roomDetails }) {
 
   return (
     <>
+      <Chat
+        user_id={roomSession?.memberId}
+        room_id={roomSession?.roomId}
+        memberName={memberList?.find((x) => x.id === roomSession?.memberId)?.name}
+      />
       <Container fluid>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
           <div
@@ -208,6 +223,22 @@ export default function InCall({ roomDetails }) {
                   unmuteIcon={() => <MdVolumeOff />}
                 />
               </Col>
+
+              {roomDetails.mod && (
+                <Col xs="auto" style={{ marginTop: 5 }}>
+                  <Select
+                    items={layouts}
+                    placeholder="Select Layout"
+                    value={curLayout}
+                    onChange={async (value) => {
+                      console.log("Layout: ", value);
+                      if (isObjEmpty(roomSession)) return;
+                      await roomSession.setLayout({ name: value });
+                      setCurLayout(value);
+                    }}
+                  />
+                </Col>
+              )}
 
               <Col xs="auto" style={{ marginTop: 5 }}>
                 <InviteButton
