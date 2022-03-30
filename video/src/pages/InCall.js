@@ -98,6 +98,7 @@ export default function InCall({ roomDetails }) {
           >
             {roomDetails.mod ? "Moderator" : "normal uwer"}
             <Video
+              key={JSON.stringify(roomDetails)}
               onRoomInit={onRoomInit}
               onRoomUpdate={onRoomUpdate}
               joinDetails={roomDetails}
