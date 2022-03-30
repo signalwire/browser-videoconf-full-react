@@ -36,15 +36,12 @@ export default function Video({
 
         try {
           console.log("Setting up RTC session");
-          try {
-            room = await SignalWire.Video.createRoomObject({
-              token,
-              rootElementId: "temp",
-              video: true,
-            });
-          } catch (e) {
-            console.log(e);
-          }
+          room = new SignalWire.Video.RoomSession({
+            token,
+            rootElement: document.getElementById('temp'),
+            video: true
+          })
+
           room.on("room.joined", async (e) => {
             thisMemberId.current = e.member_id;
             memberList.current = e.room.members;
