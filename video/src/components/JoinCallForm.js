@@ -1,42 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import CreatableSelect from 'react-select/creatable';
-import axios from "axios";
 
 export default function JoinCallForm({ onJoin = () => {} }) {
   let [name, setName] = useState("");
   let [room, setRoom] = useState("");
-  const [rooms, setRooms] = useState([])
-
-  useEffect(() => {
-    // Get list of rooms from the server
-    obtainRoomsList()
-  }, []);
-
-  async function obtainRoomsList() {
-    try {
-      const rooms = await axios.get("/rooms");
-      if (Array.isArray(rooms.data)) {
-        setRooms(
-          rooms.data.map((room) => ({ value: room.name, label: room.name }))
-        );
-      } else throw new Error();
-    } catch (e) {
-      console.error("Unable to get the list of rooms from the server.");
-    }
-  }
-
-  function isValidNewOption(inputValue, selectValue, selectOptions, accessors) {
-    if (inputValue.trim() === "") return false
-    if (selectOptions.map(v => v.value).includes(inputValue)) return false
-    if (!inputValue.match(/^[A-Za-z0-9_-]+$/g)) return false
-    return true
-  }
-
   return (
     <Container>
       <Row className="justify-content-md-center">
@@ -56,14 +27,11 @@ export default function JoinCallForm({ onJoin = () => {} }) {
 
             <Form.Group className="mb-3" controlId="VideoRoom">
               <Form.Label>Room Name</Form.Label>
-              <CreatableSelect
+              <Form.Control
+                type="text"
                 placeholder="Room Name"
-                isClearable
-                allowCreateWhileLoading
-                options={rooms}
-                isValidNewOption={isValidNewOption}
-                onChange={(value, actionMeta) => setRoom(value ? value.value : '')}
-                value={room ? {value: room, label: room} : undefined}
+                onChange={(e) => setRoom(e.target.value)}
+                value={room}
                 pattern="[^' ']+"
                 required
               />
@@ -88,13 +56,4 @@ export default function JoinCallForm({ onJoin = () => {} }) {
       </Row>
     </Container>
   );
-}
-
-async function getAllRooms() {
-  const rooms = await axios.get("/rooms");
-  if (Array.isArray(rooms.data)) {
-    return rooms.data
-  }
-
-  throw Error("Unable to get the list of rooms from the server.")
 }

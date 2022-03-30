@@ -6,7 +6,6 @@ const auth = {
 const apiurl = process.env.SPACE;
 const moderatorPermissions = [
   "room.list_available_layouts",
-  "room.recording",
   "room.set_layout",
   "room.member.audio_mute",
   "room.member.audio_unmute",
@@ -79,22 +78,6 @@ app.post("/get_token", async (req, res) => {
   }
 });
 
-// Endpoint to obtain the file of a given recording
-app.get("/get_recording/:id", async (req, res) => {
-  try {
-    const rec = await axios.get(`${apiurl}/room_recordings/${req.params.id}`, { auth })
-    res.json(rec.data)
-  } catch (e) {
-    console.log(e);
-    return res.sendStatus(500);
-  }
-})
-
-app.get("/rooms", async (req, res) => {
-  const rooms = await axios.get(`${apiurl}/rooms`, { auth })
-  res.json(rooms.data.data)
-})
-
 async function start(port) {
   app.listen(port, () => {
     console.log("Server listening at port", port);
@@ -102,4 +85,4 @@ async function start(port) {
 }
 
 // Start the server
-start(5000);
+start(5003);

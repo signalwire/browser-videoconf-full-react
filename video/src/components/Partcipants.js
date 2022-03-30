@@ -18,7 +18,6 @@ import Col from "react-bootstrap/Col";
 
 export default function Participants({
   memberList,
-  roomName,
   onMemberUpdate = () => {},
   mod = false,
 }) {
@@ -34,7 +33,7 @@ export default function Participants({
 
   return (
     <Card style={{ width: "100%" }}>
-      <Card.Header>Participants in {roomName}</Card.Header>
+      <Card.Header>Participants</Card.Header>
       <ListGroup variant="flush">
         {memberList.map((member) => (
           <ListGroup.Item key={member.id} style={{ padding: "2px 0" }}>

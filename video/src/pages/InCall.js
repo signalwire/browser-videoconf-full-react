@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import React, { useCallback, useState } from "react";
 import Button from "react-bootstrap/Button";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Video from "../components/Video";
 import Select from "../components/Select";
@@ -25,10 +22,9 @@ import {
 import { useHistory } from "react-router";
 import SplitButtonMenu from "../components/SplitButton.js";
 import ScreenShareButton from "../components/ShareScreenButton";
-import RecordingButton from "../components/RecordingButton";
 import useScreenSize from "use-screen-size";
 
-export default function InCall({ roomDetails, onRoomChange }) {
+export default function InCall({ roomDetails }) {
   let size = useScreenSize();
   console.log(size.width);
   let history = useHistory();
@@ -48,8 +44,6 @@ export default function InCall({ roomDetails, onRoomChange }) {
   let [speakerMuted, setSpeakerMuted] = useState(false);
 
   let [memberList, setMemberList] = useState([]);
-
-  const [rooms, setRooms] = useState([])
 
   let [, setUpdateSignal] = useState(true);
   const updateView = () => setUpdateSignal((x) => !x);
@@ -92,18 +86,6 @@ export default function InCall({ roomDetails, onRoomChange }) {
     [history]
   );
 
-  function refreshRoomList() {
-    axios.get("/rooms").then(v => {
-      setRooms(v.data.map(room => room.name))
-    })
-  }
-  useEffect(refreshRoomList, [])
-
-  function roomSelected(roomName) {
-    room.leave()
-    onRoomChange(roomName)
-  }
-
   return (
     <>
       <Container fluid>
@@ -131,7 +113,6 @@ export default function InCall({ roomDetails, onRoomChange }) {
           <Col className="col">
             <Participants
               memberList={memberList}
-              roomName={roomDetails.room}
               mod={roomDetails.mod}
               onMemberUpdate={async (event) => {
                 if (event.action === "remove") {
@@ -254,35 +235,6 @@ export default function InCall({ roomDetails, onRoomChange }) {
             </Col>
             <Col xs="auto" style={{ marginTop: 5 }}>
               <ScreenShareButton room={room} />
-            </Col>
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <RecordingButton
-                room={room}
-                eventLogger={logEvent}
-                recordingReady={(rec) => {
-                  const link = document.createElement('a');
-                  link.href = rec.uri;
-                  link.setAttribute('download', true);
-                  document.body.appendChild(link);
-                  link.click();
-                }}
-              />
-            </Col>
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <DropdownButton
-                title="Rooms"
-                variant="success"
-                drop="up"
-                onClick={() => refreshRoomList()}
-              >
-                {rooms.filter(r => r !== roomDetails.room)
-                      .map(roomName => (
-                  <Dropdown.Item
-                    key={roomName}
-                    onClick={() => roomSelected(roomName)}
-                  >{roomName}</Dropdown.Item>
-                ))}
-              </DropdownButton>
             </Col>
             <Col xs="auto" style={{ marginTop: 5 }}>
               <Button

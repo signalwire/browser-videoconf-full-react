@@ -32,12 +32,7 @@ function App() {
           {roomDetails.name === undefined || roomDetails.room === undefined ? (
             <Redirect to="/" />
           ) : (
-            <InCall
-              roomDetails={roomDetails}
-              onRoomChange={(room) => {
-                setRoomDetails({ name: roomDetails.name, room, mod: roomDetails.mod })
-              }}
-            />
+            <InCall roomDetails={roomDetails} />
           )}
         </Route>
 

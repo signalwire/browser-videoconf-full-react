@@ -2,7 +2,7 @@
   "name": "video",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000/",
+  "proxy": "http://localhost:5003/",
   "dependencies": {
     "@signalwire/js": "^3.2.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -16,7 +16,6 @@
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "react-select": "^4.3.1",
     "use-screen-size": "^1.1.0",
     "web-vitals": "^1.0.1"
   },

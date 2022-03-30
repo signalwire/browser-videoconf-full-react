@@ -19,13 +19,6 @@ export default function Video({
   let memberList = useRef([]);
   let screen = useScreenSize();
 
-  // Keep track of the information about the current layout
-  let currLayout = useRef(null)
-
-  // Style and position of the overlay
-  let [overlayStyle, setOverlayStyle] = useState({ display: 'none' })
-  let [speakerOverlayStyle, setSpeakerOverlayStyle] = useState({ display: 'none' })
-
   useEffect(() => {
     if (setupDone) return;
     setup_room();
@@ -90,7 +83,6 @@ export default function Video({
             onMemberListUpdate([...memberList.current]);
           });
           room.on("layout.changed", async (e) => {
-            currLayout.current = e.layout
             onRoomUpdate({ layout: e.layout.name });
           });
 
@@ -114,11 +106,6 @@ export default function Video({
             onMemberListUpdate(memberList.current);
             console.log(memberList.current);
           });
-
-          room.on('member.talking', (e) => {
-            // Update the UI: the participant with id `e.member.id` is talking iff e.member.talking == true
-            updateSpeakerOverlay(e.member.id, e.member.talking)
-          })
 
           await room.join();
 
@@ -174,60 +161,6 @@ export default function Video({
     setupDone,
   ]);
 
-  function updateOverlay(e) {
-    if (!currLayout.current)
-      return
-
-    // Mouse coordinates relative to the video element, in percentage (0 to 100)
-    const rect = document.getElementById('temp').getBoundingClientRect();
-    const x = 100 * (e.clientX - rect.left) / rect.width;
-    const y = 100 * (e.clientY - rect.top) / rect.height;
-
-    const layer = currLayout.current.layers.find(lyr => lyr.x < x && x < lyr.x + lyr.width && 
-                                                        lyr.y < y && y < lyr.y + lyr.height)
-    if (layer && layer.reservation !== 'fullscreen') {
-      setOverlayStyle({
-        display: 'block',
-        position: 'absolute',
-        overflow: 'hidden',
-        top: layer.y + '%',
-        left: layer.x + '%',
-        width: layer.width + '%',
-        height: layer.height + '%',
-        zIndex: 1,
-        background: '#0d6efd38',
-        backdropFilter: 'blur(10px)',
-        pointerEvents: 'none'
-      })
-    } else {
-      setOverlayStyle({display: 'none'})
-    }
-  }
-
-  function updateSpeakerOverlay(memberId, speaking) {
-    if (!currLayout.current)
-      return
-
-    const layer = currLayout.current.layers.find(lyr => lyr.member_id === memberId)
-    if (layer && speaking) {
-      setSpeakerOverlayStyle({
-        display: 'block',
-        position: 'absolute',
-        overflow: 'hidden',
-        top: layer.y + '%',
-        left: layer.x + '%',
-        width: layer.width + '%',
-        height: layer.height + '%',
-        zIndex: 1,
-        background: 'transparent',
-        border: '5px solid yellow',
-        pointerEvents: 'none'
-      })
-    } else {
-      setSpeakerOverlayStyle({display: 'none'})
-    }
-  }
-
   return (
     <div
       style={{
@@ -259,15 +192,8 @@ export default function Video({
         style={{
           width,
           minHeight: 0.5 * screen.height,
-          position: 'relative'
         }}
-        onMouseOver={updateOverlay}
-        onMouseMove={updateOverlay}
-        onMouseLeave={updateOverlay}
-      >
-        <div style={overlayStyle}></div>
-        <div style={speakerOverlayStyle}></div>
-      </div>
+      ></div>
     </div>
   );
 }
