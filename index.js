@@ -85,4 +85,4 @@ async function start(port) {
 }
 
 // Start the server
-start(5003);
+start(5000);

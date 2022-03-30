@@ -2,7 +2,7 @@
   "name": "video",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5003/",
+  "proxy": "http://localhost:5000/",
   "dependencies": {
     "@signalwire/js": "^3.2.0",
     "@testing-library/jest-dom": "^5.11.4",
