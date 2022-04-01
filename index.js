@@ -1,9 +1,9 @@
 require("dotenv").config();
 const auth = {
   username: process.env.PROJECT_ID, // Project-ID
-  password: process.env.API_KEY, // API token
+  password: process.env.API_KEY || process.env.API_TOKEN, // API token
 };
-const apiurl = process.env.SPACE;
+const apiurl = process.env.SPACE || `https://${process.env.SPACE_URL}/api/video`;
 const moderatorPermissions = [
   "room.list_available_layouts",
   "room.set_layout",
@@ -85,4 +85,4 @@ async function start(port) {
 }
 
 // Start the server
-start(5000);
+start(5300);

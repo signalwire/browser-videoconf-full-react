@@ -8,8 +8,8 @@ First create a new `.env` file in the format below:
 
 ```
 PROJECT_ID=<Your SignalWire Project ID here>
-SPACE=https://<Your SignalWire Username here>.signalwire.com/api/video
-API_KEY=<Your API token here>
+API_TOKEN=<Your API token here>
+SPACE_URL=<Your SignalWire Username here>.signalwire.com
 ```
 
 To start both the frontend and the backend at once:

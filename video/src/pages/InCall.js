@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Events from "../components/Events";
 import InviteButton from "../components/Invite.js";
-import Participants from "../components/Partcipants";
+import Participants from "../components/Participants";
 import NavBar from "react-bootstrap/Navbar";
 import {
   MdMic,
@@ -16,53 +16,54 @@ import {
   MdVideocam as VideocamIcon,
   MdVideocamOff,
   MdVolumeOff,
-  MdVolumeUp,
+  MdVolumeUp
 } from "react-icons/md";
 
 import { useHistory } from "react-router";
 import SplitButtonMenu from "../components/SplitButton.js";
 import ScreenShareButton from "../components/ShareScreenButton";
-import useScreenSize from "use-screen-size";
 
 export default function InCall({ roomDetails }) {
-  let size = useScreenSize();
-  console.log(size.width);
-  let history = useHistory();
-  let [layouts, setLayouts] = useState([]);
-  let [curLayout, setCurLayout] = useState();
+  const history = useHistory();
 
-  let [cameras, setCameras] = useState([]);
-  let [microphones, setMicrophones] = useState([]);
-  let [speakers, setSpeakers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  let [room, setRoom] = useState({});
-  let [event, setEvent] = useState(null);
-  let [thisMemberId, setThisMemberId] = useState(null);
+  const [layouts, setLayouts] = useState([]);
+  const [curLayout, setCurLayout] = useState();
 
-  let [audioMuted, setAudioMuted] = useState(false);
-  let [videoMuted, setVideoMuted] = useState(false);
-  let [speakerMuted, setSpeakerMuted] = useState(false);
+  const [cameras, setCameras] = useState([]);
+  const [microphones, setMicrophones] = useState([]);
+  const [speakers, setSpeakers] = useState([]);
 
-  let [memberList, setMemberList] = useState([]);
+  const [roomSession, setRoomSession] = useState({});
+  const [event, setEvent] = useState(null);
 
-  let [, setUpdateSignal] = useState(true);
+  const [audioMuted, setAudioMuted] = useState(false);
+  const [videoMuted, setVideoMuted] = useState(false);
+  const [speakerMuted, setSpeakerMuted] = useState(false);
+
+  const [memberList, setMemberList] = useState([]);
+
+  const [, setUpdateSignal] = useState(true);
   const updateView = () => setUpdateSignal((x) => !x);
 
-  let logEvent = useCallback((msg, title, variant) => {
-    console.log("Displaying toast for", msg, title, variant);
+  const logEvent = useCallback((msg, title, variant) => {
     setEvent({ text: msg, title, variant });
   }, []);
-  let onRoomInit = useCallback(
-    (room, layouts, cameras, microphones, speakers) => {
+
+  const onRoomInit = useCallback(
+    (roomSession, layouts, cameras, microphones, speakers) => {
       setLayouts(layouts);
       setCameras(cameras);
       setMicrophones(microphones);
       setSpeakers(speakers);
-      setRoom(room);
+      setRoomSession(roomSession);
+      setIsLoading(false);
     },
     []
   );
-  let onRoomUpdate = useCallback(
+
+  const onRoomUpdate = useCallback(
     (updatedValues) => {
       if (updatedValues.cameras !== undefined)
         setCameras(updatedValues.cameras);
@@ -71,12 +72,10 @@ export default function InCall({ roomDetails }) {
       if (updatedValues.microphones !== undefined)
         setMicrophones(updatedValues.microphones);
       if (updatedValues.left === true) history.push("/");
-      if (updatedValues.thisMemberId !== undefined)
-        setThisMemberId(updatedValues.thisMemberId);
       if (updatedValues.layout !== undefined)
         setCurLayout(updatedValues.layout);
       if (updatedValues.member !== undefined) {
-        let mem = updatedValues.member;
+        const mem = updatedValues.member;
         console.log("Current User", mem);
         setAudioMuted(mem.audio_muted);
         setVideoMuted(mem.video_muted);
@@ -89,167 +88,173 @@ export default function InCall({ roomDetails }) {
   return (
     <>
       <Container fluid>
-        <Row className="mt-3">
-          <Col
-            style={{ backgroundColor: "black" }}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          <div
+            style={{
+              backgroundColor: "black",
+              flex: 1,
+              marginBottom: 10,
+              maxHeight: "calc(100vh - 65px - 60px)",
+              minWidth: 300
+            }}
             className="justify-content-md-center"
-            sm="auto"
-            xs="auto"
           >
-            {roomDetails.mod ? "Moderator" : "normal uwer"}
             <Video
-              key={JSON.stringify(roomDetails)}
               onRoomInit={onRoomInit}
               onRoomUpdate={onRoomUpdate}
               joinDetails={roomDetails}
               eventLogger={logEvent}
-              width={0.65 * size.width}
               onMemberListUpdate={useCallback((list) => {
                 setMemberList(list);
               }, [])}
             />
             <Events log={event} />
-          </Col>
-          <Col className="col">
+          </div>
+          <div
+            style={{
+              minWidth: 250
+            }}
+          >
             <Participants
               memberList={memberList}
               mod={roomDetails.mod}
               onMemberUpdate={async (event) => {
                 if (event.action === "remove") {
                   console.log("Removing Member", event.id);
-                  await room.removeMember({ memberId: event.id });
+                  await roomSession.removeMember({ memberId: event.id });
                   console.log("Removed member", event.id);
-                  if (event.id === thisMemberId) history.push("/");
+                  if (event.id === roomSession?.memberId) history.push("/");
                 } else if (event.action === "mute_video") {
-                  await room.videoMute({ memberId: event.id });
-                  if (event.id === thisMemberId) setVideoMuted(true);
+                  await roomSession.videoMute({ memberId: event.id });
+                  if (event.id === roomSession?.memberId) setVideoMuted(true);
                 } else if (event.action === "mute_audio") {
-                  await room.audioMute({ memberId: event.id });
-                  if (event.id === thisMemberId) setAudioMuted(true);
+                  await roomSession.audioMute({ memberId: event.id });
+                  if (event.id === roomSession?.memberId) setAudioMuted(true);
                 } else if (event.action === "unmute_audio") {
-                  await room.audioUnmute({ memberId: event.id });
-                  if (event.id === thisMemberId) setAudioMuted(false);
+                  await roomSession.audioUnmute({ memberId: event.id });
+                  if (event.id === roomSession?.memberId) setAudioMuted(false);
                 } else if (event.action === "unmute_video") {
-                  await room.videoUnmute({ memberId: event.id });
-                  if (event.id === thisMemberId) setVideoMuted(false);
+                  await roomSession.videoUnmute({ memberId: event.id });
+                  if (event.id === roomSession?.memberId) setVideoMuted(false);
                 }
               }}
             />
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Container>
 
-      <NavBar fixed="bottom">
-        <Container fluid className="justify-content-md-center">
-          <Row>
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <SplitButtonMenu
-                muted={videoMuted}
-                setMuted={async (value) => {
-                  if (value) {
-                    await room.videoMute();
-                    setVideoMuted(true);
-                  } else {
-                    await room.videoUnmute();
-                    setVideoMuted(false);
-                  }
-                }}
-                deviceName="Camera"
-                devices={cameras}
-                pickDevice={async (id) => {
-                  await room.updateCamera({ deviceId: id });
-                  updateView();
-                }}
-                muteIcon={() => <MdVideocamOff />}
-                unmuteIcon={() => <VideocamIcon />}
-              />
-            </Col>
-
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <SplitButtonMenu
-                muted={audioMuted}
-                setMuted={async (value) => {
-                  if (value) {
-                    await room.audioMute();
-                    setAudioMuted(true);
-                  } else {
-                    await room.audioUnmute();
-                    setAudioMuted(false);
-                  }
-                }}
-                deviceName="Microphone"
-                devices={microphones}
-                pickDevice={async (id) => {
-                  await room.updateMicrophone({ deviceId: id });
-                  updateView();
-                }}
-                muteIcon={() => <MdMicOff />}
-                unmuteIcon={() => <MdMic />}
-              />
-            </Col>
-
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <SplitButtonMenu
-                muted={speakerMuted}
-                setMuted={async (value) => {
-                  if (value) {
-                    await room.deaf();
-                    setSpeakerMuted(true);
-                  } else {
-                    await room.undeaf();
-                    setSpeakerMuted(false);
-                  }
-                }}
-                deviceName="Speaker"
-                devices={speakers}
-                pickDevice={async (id) => {
-                  await room.updateSpeaker({ deviceId: id });
-                  updateView();
-                }}
-                muteIcon={() => <MdVolumeOff />}
-                unmuteIcon={() => <MdVolumeUp />}
-              />
-            </Col>
-
-            {roomDetails.mod && (
+      {!isLoading && (
+        <NavBar fixed="bottom">
+          <Container fluid className="justify-content-md-center">
+            <Row>
               <Col xs="auto" style={{ marginTop: 5 }}>
-                <Select
-                  items={layouts}
-                  placeholder="Select Layout"
-                  value={curLayout}
-                  onChange={async (value) => {
-                    console.log("Layout: ", value);
-                    await room.setLayout({ name: value });
-                    setCurLayout(value);
+                <SplitButtonMenu
+                  muted={videoMuted}
+                  setMuted={async (value) => {
+                    if (value) {
+                      await roomSession.videoMute();
+                      setVideoMuted(true);
+                    } else {
+                      await roomSession.videoUnmute();
+                      setVideoMuted(false);
+                    }
                   }}
+                  deviceName="Camera"
+                  devices={cameras}
+                  pickDevice={async (id) => {
+                    await roomSession.updateCamera({ deviceId: id });
+                    updateView();
+                  }}
+                  muteIcon={() => <VideocamIcon />}
+                  unmuteIcon={() => <MdVideocamOff />}
                 />
               </Col>
-            )}
 
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <InviteButton
-                mod={roomDetails.mod}
-                room={roomDetails.room}
-                eventLogger={logEvent}
-              />
-            </Col>
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <ScreenShareButton room={room} />
-            </Col>
-            <Col xs="auto" style={{ marginTop: 5 }}>
-              <Button
-                onClick={async () => {
-                  await room.leave();
-                  history.push("/");
-                }}
-                variant="danger"
-              >
-                Leave
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-      </NavBar>
+              <Col xs="auto" style={{ marginTop: 5 }}>
+                <SplitButtonMenu
+                  muted={audioMuted}
+                  setMuted={async (value) => {
+                    if (value) {
+                      await roomSession.audioMute();
+                      setAudioMuted(true);
+                    } else {
+                      await roomSession.audioUnmute();
+                      setAudioMuted(false);
+                    }
+                  }}
+                  deviceName="Microphone"
+                  devices={microphones}
+                  pickDevice={async (id) => {
+                    await roomSession.updateMicrophone({ deviceId: id });
+                    updateView();
+                  }}
+                  muteIcon={() => <MdMic />}
+                  unmuteIcon={() => <MdMicOff />}
+                />
+              </Col>
+
+              <Col xs="auto" style={{ marginTop: 5 }}>
+                <SplitButtonMenu
+                  muted={speakerMuted}
+                  setMuted={async (value) => {
+                    if (value) {
+                      await roomSession.deaf();
+                      setSpeakerMuted(true);
+                    } else {
+                      await roomSession.undeaf();
+                      setSpeakerMuted(false);
+                    }
+                  }}
+                  deviceName="Speaker"
+                  devices={speakers}
+                  pickDevice={async (id) => {
+                    await roomSession.updateSpeaker({ deviceId: id });
+                    updateView();
+                  }}
+                  muteIcon={() => <MdVolumeUp />}
+                  unmuteIcon={() => <MdVolumeOff />}
+                />
+              </Col>
+
+              {roomDetails.mod && (
+                <Col xs="auto" style={{ marginTop: 5 }}>
+                  <Select
+                    items={layouts}
+                    placeholder="Select Layout"
+                    value={curLayout}
+                    onChange={async (value) => {
+                      await roomSession.setLayout({ name: value });
+                      setCurLayout(value);
+                    }}
+                  />
+                </Col>
+              )}
+
+              <Col xs="auto" style={{ marginTop: 5 }}>
+                <InviteButton
+                  mod={roomDetails.mod}
+                  room={roomDetails.room}
+                  eventLogger={logEvent}
+                />
+              </Col>
+              <Col xs="auto" style={{ marginTop: 5 }}>
+                <ScreenShareButton room={roomSession} />
+              </Col>
+              <Col xs="auto" style={{ marginTop: 5 }}>
+                <Button
+                  onClick={async () => {
+                    // await roomSession.leave();
+                    history.push("/");
+                  }}
+                  variant="danger"
+                >
+                  Leave
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </NavBar>
+      )}
     </>
   );
 }

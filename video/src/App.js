@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./components/Video.js";
 import Header from "./components/Header.js";
 
 import {
@@ -8,7 +7,7 @@ import {
   Route,
   useHistory,
   useLocation,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 
 import JoinCallForm from "./components/JoinCallForm.js";
