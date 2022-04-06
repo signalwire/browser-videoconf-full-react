@@ -1,11 +1,12 @@
 {
-  "name": "example-create-react-app-express",
+  "name": "browser-videoconf-full-react",
   "version": "1.0.0",
   "scripts": {
     "install": "cd video && yarn install",
     "client": "cd video && yarn start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "prod": "cd video && yarn build && cd .. && node index.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
