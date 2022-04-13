@@ -13,7 +13,8 @@ export default function ScreenShareButton({ room }) {
         if (screenShareObj === undefined) {
           let sc;
           try {
-            sc = await room.createScreenShareObject();
+            sc = await room.startScreenShare();
+            console.log(sc);
           } catch (e) {
             setScreenShareObj(undefined);
             console.log(e);
