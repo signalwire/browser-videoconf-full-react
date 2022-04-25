@@ -3,6 +3,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 export default function InviteButton({
   room = "room",
+  roomName = "Room",
   mod,
   eventLogger = (msg) => {
     console.log("InviteEvent", msg);
@@ -15,7 +16,9 @@ export default function InviteButton({
         "//" +
         window.location.host +
         "/invite?r=" +
-        r
+        r +
+        "&rn=" +
+        roomName
       );
     else if (type === "mod") return generateLink(r) + "&m=mod";
   }
@@ -28,50 +31,31 @@ export default function InviteButton({
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Header>As guest</Dropdown.Header>
           <Dropdown.Item
+            style={{
+              maxWidth: 200,
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+            }}
             onClick={() => {
               let tx = document.createElement("textarea");
               document.body.appendChild(tx);
-              tx.value = generateLink(room);
+              tx.value = generateLink(room, "mod");
               tx.select();
               document.execCommand("copy");
               document.body.removeChild(tx);
               // setShowCopiedToast(true);
               eventLogger(
-                "The link " + generateLink(room) + " copied to clipboard.",
+                "The link " +
+                  generateLink(room, "mod") +
+                  " copied to clipboard.",
                 "Link copied",
                 "info"
               );
             }}
           >
-            {generateLink(room)}
+            {generateLink(room, "mod")}
           </Dropdown.Item>
-          {mod && (
-            <>
-              <Dropdown.Header>As moderator</Dropdown.Header>
-              <Dropdown.Item
-                onClick={() => {
-                  let tx = document.createElement("textarea");
-                  document.body.appendChild(tx);
-                  tx.value = generateLink(room, "mod");
-                  tx.select();
-                  document.execCommand("copy");
-                  document.body.removeChild(tx);
-                  // setShowCopiedToast(true);
-                  eventLogger(
-                    "The link " +
-                      generateLink(room, "mod") +
-                      " copied to clipboard.",
-                    "Link copied",
-                    "info"
-                  );
-                }}
-              >
-                {generateLink(room, "mod")}
-              </Dropdown.Item>
-            </>
-          )}
         </Dropdown.Menu>
       </Dropdown>
     </>

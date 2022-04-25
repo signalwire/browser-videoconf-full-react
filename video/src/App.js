@@ -7,12 +7,12 @@ import {
   Route,
   useHistory,
   useLocation,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 
 import JoinCallForm from "./components/JoinCallForm.js";
 import InviteForm from "./components/InviteForm";
-import InCall from "./pages/InCall.js";
+import Prebuilt from "./components/prebuilt/PrebuiltInCall.js";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -27,23 +27,24 @@ function App() {
     <>
       <Header />
       <Switch>
-        <Route path="/in-call">
+        <Route path="/prebuilt">
           {roomDetails.name === undefined || roomDetails.room === undefined ? (
             <Redirect to="/" />
           ) : (
-            <InCall roomDetails={roomDetails} />
+            <Prebuilt roomDetails={roomDetails} />
           )}
         </Route>
 
         <Route path="/invite">
           <InviteForm
             mod={query.get("m") === "mod"}
-            roomName={query.get("r")}
-            onJoin={({ room, name, mod }) => {
+            roomName={query.get("rn")}
+            onJoin={({ name, mod }) => {
+              let room = query.get("r");
               console.log(name, room, mod);
               setRoomDetails({ name, room, mod });
               console.log(history);
-              history.push("/in-call");
+              history.push("/prebuilt");
             }}
           />
         </Route>
@@ -53,7 +54,7 @@ function App() {
               console.log(name, room);
               setRoomDetails({ name, room, mod: true });
               console.log(history);
-              history.push("/in-call");
+              history.push("/prebuilt");
             }}
           />
         </Route>

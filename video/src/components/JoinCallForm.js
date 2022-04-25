@@ -26,10 +26,10 @@ export default function JoinCallForm({ onJoin = () => {} }) {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="VideoRoom">
-              <Form.Label>Room Name</Form.Label>
+              <Form.Label>Room Token</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Room Name"
+                placeholder="Room Token"
                 onChange={(e) => setRoom(e.target.value)}
                 value={room}
                 pattern="[^' ']+"
