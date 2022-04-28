@@ -50,9 +50,7 @@ export default function JoinCallForm({
                 if (name !== "") {
                   onJoin({ name, room: roomName, mod: mod && !joinAsGuest });
                 } else {
-                  alert(
-                    "Please Fill all fields (todo use bootstrap alert or form error messages)"
-                  );
+                  alert("Please fill all fields");
                 }
               }}
             >
