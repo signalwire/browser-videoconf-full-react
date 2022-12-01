@@ -1,7 +1,7 @@
 # Zoom Clone example
 
 This example uses the components from
-[@signalwire-community/react](https://github.com/signalwire-community/react/)
+[@signalwire-community/react](https://www.npmjs.com/package/@signalwire-community/react)
 to create a zoom-like app.
 
 📖 [Read the full guide](https://developer.signalwire.com/guides/video/zoom-clone)
